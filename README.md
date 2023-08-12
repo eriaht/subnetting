@@ -1,6 +1,8 @@
 # subnetting
 Two separate scripts. One for classful subnetting, the other for classless or VLSM subnetting.
 
+I am currently studying for the Network+ and I have always wanted my own subnet calculator so here it is.
+
 ## How to use the scripts
 
 ### Classful subnetting
