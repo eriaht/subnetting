@@ -1,3 +1,5 @@
+import re
+
 def ip_octets_int(ip) -> list:
     return [int(octet) for octet in ip.split('.')]
 
@@ -99,5 +101,15 @@ def ip_subnet_details(ip, ip_cl):
     print('-'*37)
 
 if __name__ == '__main__':
-    ip = input('Enter ip address for classful subnet details: ')
-    ip_subnet_details(ip, ip_class(ip))
+    
+    ip_address = None
+    while True:
+        ip_address = input("Enter ip address: ")
+        
+        if not re.search("^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$", ip_address):
+            print('Please enter a valid IPv4 address')
+            continue
+        else:
+            break
+
+    ip_subnet_details(ip_address, ip_class(ip_address))
