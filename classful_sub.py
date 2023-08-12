@@ -1,13 +1,15 @@
 import re
 
-def ip_octets_int(ip) -> list:
+# Create a list of containing each octet as an int
+def ip_octets_int(ip: str) -> list:
     return [int(octet) for octet in ip.split('.')]
 
+# Create a list of containing each octet as a str
 def ip_octets_str(ip) -> list:
     return ip.split('.')
 
 # Determine the IP address class
-def ip_class(ip) -> str:
+def ip_class(ip: str) -> str:
     first_octet = ip_octets_int(ip)[0]
 
     if first_octet in range(1, 128):
@@ -21,9 +23,10 @@ def ip_class(ip) -> str:
     elif first_octet in range(240, 255):
         return 'E'
     
-# Subnet mask
-def ip_subnet_mask(ip_cl) -> str:
+# Find the subnet mask
+def ip_subnet_mask(ip_cl: str) -> str:
     subnet_mask = None
+
     if ip_cl == 'A':
         subnet_mask = '255.0.0.0'
     elif ip_cl == 'B':
@@ -33,10 +36,11 @@ def ip_subnet_mask(ip_cl) -> str:
     
     return subnet_mask
     
-# Network address
-def ip_network_address(ip, ip_cl) -> str:
+# Find the network address
+def ip_network_address(ip: str, ip_cl: str) -> str:
     octets = ip_octets_str(ip)
     network_addr = None
+
     if ip_cl == 'A':
         network_addr = f'{octets[0]}.0.0.0'
     elif ip_cl == 'B':
@@ -46,11 +50,12 @@ def ip_network_address(ip, ip_cl) -> str:
 
     return network_addr
 
-# First and last available host
-def ip_first_last_host(ip, ip_cl) -> tuple:
+# Find first and last available host
+def ip_first_last_host(ip: str, ip_cl: str) -> tuple:
     octets = ip_octets_str(ip)
     first_host = None
     last_host = None
+
     if ip_cl == 'A':
         first_host = f'{octets[0]}.0.0.1'
         last_host = f'{octets[0]}.255.255.254'
@@ -63,10 +68,11 @@ def ip_first_last_host(ip, ip_cl) -> tuple:
 
     return (first_host, last_host)
 
-# Broadcast address
-def ip_broadcast(ip, ip_cl) -> str:
+# Find broadcast address
+def ip_broadcast(ip: str, ip_cl: str) -> str:
     octets = ip_octets_str(ip)
     broadcast_addr = None
+
     if ip_cl == 'A':
         broadcast_addr = f'{octets[0]}.255.255.255'
     elif ip_cl == 'B':
@@ -76,7 +82,8 @@ def ip_broadcast(ip, ip_cl) -> str:
 
     return broadcast_addr
 
-def ip_hosts(ip_cl):
+# Find number of hosts
+def ip_hosts(ip_cl: str) -> int:
     if ip_cl == 'A':
         return 2**24
     elif ip_cl == 'B':
@@ -84,7 +91,8 @@ def ip_hosts(ip_cl):
     elif ip_cl == 'C':
         return 2**8
 
-def ip_subnet_details(ip, ip_cl):
+# Display subnet details
+def ip_subnet_details(ip: str, ip_cl: str) -> None:
     subnet_class = f'class {ip_cl} address'
     subnet_mask = ip_subnet_mask(ip_cl)
     network_address = ip_network_address(ip, ip_cl)

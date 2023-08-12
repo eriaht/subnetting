@@ -1,12 +1,15 @@
 import re
 from classful_sub import ip_octets_int
 
-def ip_to_bin(ip):
+# Convert IP to binary
+def ip_to_bin(ip: str) -> list:
     octets_dec = ip_octets_int(ip)
     octets_bin = [f"{bin(octect).replace('0b', ''):>08}" for octect in octets_dec]
+    
     return octets_bin
 
-def ip_net_id(ip, mask):
+# Find network address
+def ip_net_id(ip: str, mask: str) -> list:
     ip_octets = ip_octets_int(ip)
     mask_octets = ip_octets_int(mask)
     net_id = []
@@ -16,24 +19,8 @@ def ip_net_id(ip, mask):
 
     return net_id
 
-'''
-IP:          137.72.145.170
-Net address: 137.72.144.0
-Subnet Mask: 255.255.248.0
-
-    10010000 = 144
-or  11111000 = 248
-    ---------------
-    11111000 = 248
-xor 11111111 = 255
-    ---------------
-    00000111 = 7
-+   10010000 = 144
-    ---------------
-    10010111 = 151
-'''
-
-def ip_broadcast(ip, mask):
+# Find broadcast address
+def ip_broadcast(ip: str, mask: str) -> list:
     net_id = ip_net_id(ip, mask)
     mask_octets = ip_octets_int(mask)
     broadcast_addr = []
@@ -44,12 +31,31 @@ def ip_broadcast(ip, mask):
         elif mask_octet < 255: # <-----------------
             if net_id[i] > 0:
                 broadcast_addr.append(((net_id[i] | mask_octets[i]) ^ 255) + net_id[i])
+                '''
+                Logic for this part
+                --------------------
+                IP:          137.72.145.170
+                Net address: 137.72.144.0
+                Subnet Mask: 255.255.248.0
+
+                    10010000 = 144
+                or  11111000 = 248
+                    ---------------
+                    11111000 = 248
+                xor 11111111 = 255
+                    ---------------
+                    00000111 = 7
+                +   10010000 = 144
+                    ---------------
+                    10010111 = 151
+                '''
             else:
                 broadcast_addr.append((net_id[i] | mask_octets[i]) ^ 255)
 
     return broadcast_addr
 
-def ip_first_last_host(net_id, broadcast) -> tuple:
+# Find first and last host addresses
+def ip_first_last_host(net_id: list, broadcast: list) -> tuple:
     first_host = net_id[0:len(net_id) - 1]
     first_host.append(net_id[len(net_id) - 1] + 1)
 
@@ -58,8 +64,8 @@ def ip_first_last_host(net_id, broadcast) -> tuple:
 
     return (first_host, last_host)
 
-
-def ip_hosts(ip, mask) -> int:
+# Find number of possible hosts
+def ip_hosts(ip: str, mask: str) -> int:
     mask_octets = ip_octets_int(mask)
     broadcast = ip_broadcast(ip, mask)
     host_octects = []
@@ -77,7 +83,8 @@ def ip_hosts(ip, mask) -> int:
 
     return 2**host_bits
 
-def ip_subnet_details(ip, mask):
+# Display subnet details
+def ip_subnet_details(ip: str, mask: str) -> None:
     net_id = ip_net_id(ip, mask)
     broadcast = ip_broadcast(ip, mask)
     first_host, last_host = ip_first_last_host(net_id, broadcast)
