@@ -5,7 +5,7 @@ def ip_octets_int(ip: str) -> list:
     return [int(octet) for octet in ip.split('.')]
 
 # Create a list of containing each octet as a str
-def ip_octets_str(ip) -> list:
+def ip_octets_str(ip: str) -> list:
     return ip.split('.')
 
 # Determine the IP address class
