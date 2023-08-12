@@ -1,3 +1,5 @@
+# Written by eriaht 08/12/23
+
 from get_valid_ip import get_valid_ip
 
 # Create a list of containing each octet as an int
