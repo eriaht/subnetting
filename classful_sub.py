@@ -76,13 +76,21 @@ def ip_broadcast(ip, ip_cl) -> str:
 
     return broadcast_addr
 
-# Last available host
+def ip_hosts(ip_cl):
+    if ip_cl == 'A':
+        return 2**24
+    elif ip_cl == 'B':
+        return 2**16
+    elif ip_cl == 'C':
+        return 2**8
+
 def ip_subnet_details(ip, ip_cl):
     subnet_class = f'class {ip_cl} address'
     subnet_mask = ip_subnet_mask(ip_cl)
     network_address = ip_network_address(ip, ip_cl)
     first_host, last_host = ip_first_last_host(ip, ip_cl)
     broadcast = ip_broadcast(ip, ip_cl)
+    hosts = ip_hosts(ip_cl)
 
     print()
     print('{:^37}'.format(subnet_class))
@@ -98,6 +106,10 @@ def ip_subnet_details(ip, ip_cl):
     print('{:<20}| '.format('last host:') + last_host)
     print('-'*37)
     print('{:<20}| '.format('broadcast address:') + broadcast)       
+    print('-'*37)
+    print('{:<20}| '.format('number of hosts:') + str(hosts))       
+    print('-'*37)
+    print('{:<20}| '.format('usable hosts:') + str(hosts - 2))       
     print('-'*37)
 
 if __name__ == '__main__':
