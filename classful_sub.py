@@ -53,8 +53,8 @@ def ip_network_address(ip: str, ip_cl: str) -> str:
 # Find first and last available host
 def ip_first_last_host(ip: str, ip_cl: str) -> tuple:
     octets = ip_octets_str(ip)
-    first_host = ()
-    last_host = ()
+    first_host = None
+    last_host = None
 
     if ip_cl == 'A':
         first_host = f'{octets[0]}.0.0.1'
