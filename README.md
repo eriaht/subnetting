@@ -40,6 +40,7 @@ python classless_sub.py
 ```
 Enter ip address: 172.20.2.79
 Enter subnet mask: 255.255.224.0
+
 -------------------------------------
 ip address:         | 172.20.2.79
 -------------------------------------
