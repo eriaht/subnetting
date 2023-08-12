@@ -83,6 +83,7 @@ def ip_subnet_details(ip, mask):
     first_host, last_host = ip_first_last_host(net_id, broadcast)
     hosts = ip_hosts(ip, mask)
 
+    print()
     print('-'*37)
     print('{:<20}| '.format('ip address:') + ip)
     print('-'*37)
