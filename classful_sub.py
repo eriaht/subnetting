@@ -1,4 +1,4 @@
-import re
+from get_valid_ip import get_valid_ip
 
 # Create a list of containing each octet as an int
 def ip_octets_int(ip: str) -> list:
@@ -122,14 +122,6 @@ def ip_subnet_details(ip: str, ip_cl: str) -> None:
 
 if __name__ == '__main__':
     
-    ip_address = None
-    while True:
-        ip_address = input("Enter ip address: ")
-        
-        if not re.search("^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$", ip_address):
-            print('Please enter a valid IPv4 address')
-            continue
-        else:
-            break
+    ip_address = get_valid_ip()
 
     ip_subnet_details(ip_address, ip_class(ip_address))

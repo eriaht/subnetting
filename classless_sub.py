@@ -1,5 +1,5 @@
-import re
 from classful_sub import ip_octets_int
+from get_valid_ip import get_valid_ip
 
 # Convert IP to binary
 def ip_to_bin(ip: str) -> list:
@@ -108,26 +108,8 @@ def ip_subnet_details(ip: str, mask: str) -> None:
     print('-'*37)   
 
 if __name__ == "__main__":
-    ip_address = None
-    subnet_mask = None
-
-    while True:
-        ip_address = input("Enter ip address: ")
-        
-        if not re.search("^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$", ip_address):
-            print('Please enter a valid IPv4 address')
-            continue
-        else:
-            break
-
-    while True:
-        subnet_mask = input("Enter subnet mask: ")
-
-        if not re.search("[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", subnet_mask):
-            print('Please enter a valid IPv4 address')
-            continue
-        else:
-            break
+    ip_address = get_valid_ip()
+    subnet_mask = get_valid_ip()
 
     if ip_address and subnet_mask:
         ip_subnet_details(ip_address, subnet_mask)
