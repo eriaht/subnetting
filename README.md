@@ -32,6 +32,7 @@ broadcast address:  | 192.168.1.255
 python classless_sub.py
 ```
 
+### output
 ```
 Enter ip address: 172.20.2.79
 Enter subnet mask: 255.255.224.0
