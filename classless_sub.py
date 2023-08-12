@@ -1,4 +1,5 @@
-from classful_sub import ip_octets_int
+import re
+from subnetting.classful_sub import ip_octets_int
 
 def ip_to_bin(ip):
     octets_dec = ip_octets_int(ip)
@@ -33,7 +34,6 @@ xor 11111111 = 255
 '''
 
 def ip_broadcast(ip, mask):
-
     net_id = ip_net_id(ip, mask)
     mask_octets = ip_octets_int(mask)
     broadcast_addr = []
@@ -66,11 +66,16 @@ def ip_hosts(ip, mask) -> int:
     
     for i, mask_octet in enumerate(mask_octets):
         if mask_octet < 255:
-            host_octects.append(bin(broadcast[i]).replace('0b', ''))
+            binary_octect = bin(broadcast[i]).replace('0b', '')
+
+            if '0' in binary_octect:
+                binary_octect = binary_octect[binary_octect.rindex('0') + 1:]
+
+            host_octects.append(binary_octect)
 
     host_bits = len(''.join(host_octects))
 
-    return 2**host_bits - 2
+    return 2**host_bits
 
 def ip_subnet_details(ip, mask):
     net_id = ip_net_id(ip, mask)
@@ -90,10 +95,31 @@ def ip_subnet_details(ip, mask):
     print('{:<20}| '.format('broadcast address:') + '.'.join([str(octet) for octet in broadcast]))       
     print('-'*37)
     print('{:<20}| '.format('number of hosts:') + str(hosts))
+    print('-'*37)  
+    print('{:<20}| '.format('usable hosts:') + str(hosts - 2))
     print('-'*37)   
 
 if __name__ == "__main__":
-    ip_address = input("Enter ip address: ")
-    subnet_mask = input("Enter subnet mask: ")
+    ip_address = None
+    subnet_mask = None
 
-    ip_subnet_details(ip_address, subnet_mask)
+    while True:
+        ip_address = input("Enter ip address: ")
+        
+        if not re.search("^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$", ip_address):
+            print('Please enter a valid IPv4 address')
+            continue
+        else:
+            break
+
+    while True:
+        subnet_mask = input("Enter subnet mask: ")
+
+        if not re.search("[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", subnet_mask):
+            print('Please enter a valid IPv4 address')
+            continue
+        else:
+            break
+
+    if ip_address and subnet_mask:
+        ip_subnet_details(ip_address, subnet_mask)
