@@ -1,5 +1,5 @@
 import re
-from subnetting.classful_sub import ip_octets_int
+from classful_sub import ip_octets_int
 
 def ip_to_bin(ip):
     octets_dec = ip_octets_int(ip)
