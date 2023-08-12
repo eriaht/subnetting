@@ -25,7 +25,7 @@ def ip_class(ip: str) -> str:
     
 # Find the subnet mask
 def ip_subnet_mask(ip_cl: str) -> str:
-    subnet_mask = None
+    subnet_mask = ''
 
     if ip_cl == 'A':
         subnet_mask = '255.0.0.0'
@@ -39,7 +39,7 @@ def ip_subnet_mask(ip_cl: str) -> str:
 # Find the network address
 def ip_network_address(ip: str, ip_cl: str) -> str:
     octets = ip_octets_str(ip)
-    network_addr = None
+    network_addr = ''
 
     if ip_cl == 'A':
         network_addr = f'{octets[0]}.0.0.0'
@@ -53,8 +53,8 @@ def ip_network_address(ip: str, ip_cl: str) -> str:
 # Find first and last available host
 def ip_first_last_host(ip: str, ip_cl: str) -> tuple:
     octets = ip_octets_str(ip)
-    first_host = None
-    last_host = None
+    first_host = ()
+    last_host = ()
 
     if ip_cl == 'A':
         first_host = f'{octets[0]}.0.0.1'
@@ -71,7 +71,7 @@ def ip_first_last_host(ip: str, ip_cl: str) -> tuple:
 # Find broadcast address
 def ip_broadcast(ip: str, ip_cl: str) -> str:
     octets = ip_octets_str(ip)
-    broadcast_addr = None
+    broadcast_addr = ''
 
     if ip_cl == 'A':
         broadcast_addr = f'{octets[0]}.255.255.255'
