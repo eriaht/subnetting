@@ -96,6 +96,8 @@ def ip_subnet_details(ip: str, mask: str) -> None:
     print('-'*37)
     print('{:<20}| '.format('ip address:') + ip)
     print('-'*37)
+    print('{:<20}| '.format('subnet mask:') + subnet_mask)
+    print('-'*37)
     print('{:<20}| '.format('network address:') + '.'.join([str(octet) for octet in net_id]))
     print('-'*37)
     print('{:<20}| '.format('first host:') + '.'.join([str(octet) for octet in first_host]))
