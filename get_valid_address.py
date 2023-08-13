@@ -30,27 +30,37 @@ def get_valid_subnet_mask():
 
         mask_octets = [int(octet) for octet in mask.split('.')]
 
-        significant_octet_index = None
+        if len(set(mask_octets)) == 1 and list(set(mask_octets))[0] == 255:
+            break
+
+        significant_octet_index = -1
         for index, octect in enumerate(mask_octets):
+
+            if index != len(mask_octets) - 1:
+                if octect == 255 and (mask_octets[index + 1] == 0):
+                    significant_octet_index = index
+                    break
+
             if octect in range(1, 255):
                 significant_octet_index = index
                 break
         
         error_in_mask = False
-        for index in range(significant_octet_index + 1, len(mask_octets)):
-            if mask_octets[index] != 0:
-                error_in_mask = True
-                break
-        
+        if significant_octet_index > -1 and (significant_octet_index != len(mask_octets) - 1):
+            for index in range(significant_octet_index + 1, len(mask_octets)):
+                if mask_octets[index] != 0:
+                    error_in_mask = True
+                    break
+
         if error_in_mask: 
             print('Please enter a valid subnet mask') 
             continue
 
-        if significant_octet_index:
-            if mask_octets[significant_octet_index] not in [128, 192, 224, 240, 248, 252, 254]:
+        if significant_octet_index > -1:
+            if mask_octets[significant_octet_index] not in [128, 192, 224, 240, 248, 252, 254, 255]:
                 print('Please enter a valid subnet mask')
                 continue
-        else:
-            break
+            else:
+                break
         
     return mask
