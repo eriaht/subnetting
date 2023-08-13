@@ -114,7 +114,7 @@ def ip_subnet_details(ip: str, mask: str) -> None:
 if __name__ == "__main__":
 
     ip_address = get_valid_ip()
-    subnet_mask = get_valid_ip()
+    subnet_mask = get_valid_subnet_mask()
 
     if ip_address and subnet_mask:
         ip_subnet_details(ip_address, subnet_mask)
