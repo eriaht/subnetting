@@ -1,7 +1,7 @@
 # Written by eriaht 08/12/23
 
 from classful_sub import ip_octets_int
-from get_valid_ip import get_valid_ip
+from get_valid_address import get_valid_ip, get_valid_subnet_mask
 
 # Convert IP to binary
 def ip_to_bin(ip: str) -> list:
@@ -109,11 +109,12 @@ def ip_subnet_details(ip: str, mask: str) -> None:
     print('{:<20}| '.format('number of hosts:') + str(hosts))
     print('-'*37)  
     print('{:<20}| '.format('usable hosts:') + str(hosts - 2))
-    print('-'*37)   
+    print('-'*37)
 
 if __name__ == "__main__":
+    
     ip_address = get_valid_ip()
-    subnet_mask = get_valid_ip()
+    subnet_mask = get_valid_subnet_mask()
 
     if ip_address and subnet_mask:
         ip_subnet_details(ip_address, subnet_mask)
