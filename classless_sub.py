@@ -33,16 +33,22 @@ def ip_broadcast(ip: str, mask: str) -> list:
     for i, mask_octet in enumerate(mask_octets):
         if mask_octet == 255:
             broadcast_addr.append(net_id[i])
-        elif mask_octet < 255: # <-----------------
+        elif mask_octet < 255:
             if net_id[i] > 0:
-                broadcast_addr.append(((net_id[i] | mask_octets[i]) ^ 255) + net_id[i])
                 '''
                 Logic for this part
                 --------------------
+                1. Find the SO (significant octet) for both the network address and subnet mask.
+                2. Perform an OR operation between the SO of the network address and the SO of the subnet mask.
+                3. Perform an XOR on the output of the above OR operation with 255 or 1111 1111.
+                4. Add the SO from the network address to the output of the above operation.
+
                 IP:          137.72.145.170
                 Net address: 137.72.144.0
+                                     ^-- Significant octet of the network address
                 Subnet Mask: 255.255.248.0
-
+                                     ^-- Significant octet of the subnet mask
+                
                     10010000 = 144
                 or  11111000 = 248
                     ---------------
@@ -54,6 +60,7 @@ def ip_broadcast(ip: str, mask: str) -> list:
                     ---------------
                     10010111 = 151
                 '''
+                broadcast_addr.append(((net_id[i] | mask_octets[i]) ^ 255) + net_id[i])
             else:
                 broadcast_addr.append((net_id[i] | mask_octets[i]) ^ 255)
 
