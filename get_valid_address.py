@@ -17,6 +17,15 @@ def get_valid_ip():
 
     return ip_address
 
+def cidr_32(mask):
+    mask_octets = [int(octet) for octet in mask.split('.')]
+
+    if len(set(mask_octets)) == 1 and list(set(mask_octets))[0] == 255:
+        return True
+    
+    return False
+
+
 # Get valid ip address
 def get_valid_subnet_mask():
     mask = None
@@ -28,10 +37,10 @@ def get_valid_subnet_mask():
             print('Please enter a valid subnet mask')
             continue
 
-        mask_octets = [int(octet) for octet in mask.split('.')]
-
-        if len(set(mask_octets)) == 1 and list(set(mask_octets))[0] == 255:
+        if cidr_32(mask):
             break
+
+        mask_octets = [int(octet) for octet in mask.split('.')]
 
         significant_octet_index = -1
         for index, octect in enumerate(mask_octets):
