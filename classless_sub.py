@@ -1,7 +1,7 @@
 # Written by eriaht 08/12/23
 
 from classful_sub import ip_octets_int
-from get_valid_address import get_valid_ip, get_valid_subnet_mask
+from get_valid_address import get_valid_ip, get_valid_subnet_mask, cidr_32
 
 # Convert IP to binary
 def ip_to_bin(ip: str) -> list:
@@ -23,6 +23,9 @@ def ip_net_id(ip: str, mask: str) -> list:
 
 # Find broadcast address
 def ip_broadcast(ip: str, mask: str) -> list:
+    if cidr_32(mask):
+        return ip_octets_int(ip)
+
     net_id = ip_net_id(ip, mask)
     mask_octets = ip_octets_int(mask)
     broadcast_addr = []
@@ -57,7 +60,12 @@ def ip_broadcast(ip: str, mask: str) -> list:
     return broadcast_addr
 
 # Find first and last host addresses
-def ip_first_last_host(net_id: list, broadcast: list) -> tuple:
+def ip_first_last_host(ip:str, net_id: list, broadcast: list) -> tuple:
+    first_host = None
+    last_host = None
+    if ip_octets_int(ip) == broadcast:
+        return (ip_octets_int(ip), '')
+
     first_host = net_id[0:len(net_id) - 1]
     first_host.append(net_id[len(net_id) - 1] + 1)
 
@@ -67,7 +75,10 @@ def ip_first_last_host(net_id: list, broadcast: list) -> tuple:
     return (first_host, last_host)
 
 # Find number of possible hosts
-def ip_hosts(ip: str, mask: str) -> int:
+def ip_hosts(ip: str, mask: str) -> list:
+    if cidr_32(mask):
+        return [1, 0]
+
     mask_octets = ip_octets_int(mask)
     broadcast = ip_broadcast(ip, mask)
     host_octects = []
@@ -82,14 +93,15 @@ def ip_hosts(ip: str, mask: str) -> int:
             host_octects.append(binary_octect)
 
     host_bits = len(''.join(host_octects))
+    hosts = 2**host_bits
 
-    return 2**host_bits
+    return [hosts, hosts - 2]
 
 # Display subnet details
 def ip_subnet_details(ip: str, mask: str) -> None:
     net_id = ip_net_id(ip, mask)
     broadcast = ip_broadcast(ip, mask)
-    first_host, last_host = ip_first_last_host(net_id, broadcast)
+    first_host, last_host = ip_first_last_host(ip, net_id, broadcast)
     hosts = ip_hosts(ip, mask)
 
     print()
@@ -106,9 +118,9 @@ def ip_subnet_details(ip: str, mask: str) -> None:
     print('-'*37)
     print('{:<20}| '.format('broadcast address:') + '.'.join([str(octet) for octet in broadcast]))       
     print('-'*37)
-    print('{:<20}| '.format('number of hosts:') + str(hosts))
+    print('{:<20}| '.format('number of hosts:') + str(hosts[0]))
     print('-'*37)  
-    print('{:<20}| '.format('usable hosts:') + str(hosts - 2))
+    print('{:<20}| '.format('usable hosts:') + str(hosts[1]))
     print('-'*37)
 
 if __name__ == "__main__":
