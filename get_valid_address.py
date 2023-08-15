@@ -17,7 +17,7 @@ def get_valid_ip():
 
     return ip_address
 
-def cidr_32(mask):
+def cidr_32(mask: str) -> bool:
     mask_octets = [int(octet) for octet in mask.split('.')]
 
     if len(set(mask_octets)) == 1 and list(set(mask_octets))[0] == 255:
