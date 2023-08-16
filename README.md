@@ -1,5 +1,6 @@
 # subnetting
 A cli subnet calculator.
+
 ```
 python subnet.py -h
 usage: subnet.py [-h] [--net_class NET_CLASS] [--ip IP] [--mask MASK]
