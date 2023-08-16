@@ -6,7 +6,9 @@ A cli subnet calculator 🧮 to satisfy your subnetting needs. Have you ever wan
 ### CLI subnet calculator
 ```
 python subnet.py --net_class B --ip 72.20.2.79 --cidr /19
+```
 or
+```
 python subnet.py --net_class B --ip 72.20.2.79 --mask 255.255.224.0
 ```
 ### output
@@ -39,7 +41,9 @@ possible_networks   | 8
 ### Output in JSON
 ```
 python subnet.py --net_class B --ip 72.20.2.79 --cidr /19 --json=True
+```
 or
+```
 python subnet.py --net_class B --ip 72.20.2.79 --mask 255.255.224.0 --json=True
 ```
 ### output
