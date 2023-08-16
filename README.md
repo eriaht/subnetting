@@ -1,8 +1,5 @@
 # subnetting
 A subnet calculator cli tool.
-
-I am currently studying for the Network+ and I have always wanted my own subnet calculator so here it is.
-
 ```
 python subnet.py -h
 usage: subnet.py [-h] [--ip IP] [--mask MASK]
