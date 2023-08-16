@@ -1,50 +1,18 @@
 # subnetting
-Two separate scripts. One for classful subnetting, the other for classless or VLSM subnetting.
+A subnet calculator cli tool.
 
 I am currently studying for the Network+ and I have always wanted my own subnet calculator so here it is.
 
-## How to use the scripts
+## How to use the script
 
-### Classful subnetting
+### CLI subnet calculator
 ```
-python classful_sub.py
+python subnet.py --ip 72.20.2.79 --mask 255.255.224.0
 ```
 ### output
 ```
-Enter ip address: 192.168.1.1
-
-           class C address           
 -------------------------------------
-ip address:         | 192.168.1.1
--------------------------------------
-subnet mask:        | 255.255.255.0
--------------------------------------
-network address:    | 192.168.1.0
--------------------------------------
-first host:         | 192.168.1.1
--------------------------------------
-last host:          | 192.168.1.254
--------------------------------------
-broadcast address:  | 192.168.1.255
--------------------------------------
-number of hosts:    | 256
--------------------------------------
-usable hosts:       | 254
--------------------------------------
-```
-
-### Classless subnetting aka VLSM
-```
-python classless_sub.py
-```
-
-### output
-```
-Enter ip address: 72.20.2.79
-Enter subnet mask: 155.1.1.1
-Please enter a valid subnet mask
-Enter subnet mask: 255.255.224.0
-
+class:              | A
 -------------------------------------
 ip address:         | 72.20.2.79
 -------------------------------------
