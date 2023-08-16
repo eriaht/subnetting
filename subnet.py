@@ -2,6 +2,7 @@
 
 import re
 import json
+from math import floor
 from argparse import ArgumentParser
 
 network_classes = {
@@ -37,6 +38,33 @@ def ip_net_addr(ip: str, mask: str) -> list:
         net_addr.append(ip_octets[i] & mask_octets[i])
 
     return net_addr
+
+# Validate cidr
+def validate_cidr(cidr_str: str) -> bool:
+    cidr = int(cidr_str.replace("/", ""))
+
+    if cidr not in range(1, 33):
+        return False
+    
+    return True
+
+# Convert cidr to decimal subnet mask
+def cidr_to_mask(cidr_str: str) -> str:
+    cidr = int(cidr_str.replace("/", ""))
+    mask_bits = f"{'1'*cidr:<032}"
+    mask_octets = ['0b' + mask_bits[i: i + 8] for i in range(0, len(mask_bits), 8)]
+
+    for i, octet in enumerate(mask_octets):
+        mask_octets[i] = str(int(octet, 2))
+
+    return ".".join(mask_octets)
+
+# subnet mask to cidr
+def mask_to_cidr(mask: str) -> str:
+    mask_bits = str(len("".join(ip_to_bin(mask)).replace("0", "")))
+
+    return "/" + mask_bits
+
 
 def cidr_32(mask: str) -> bool:
     mask_octets = [int(octet) for octet in mask.split(".")]
@@ -160,6 +188,7 @@ def display_subnet_details(**kwargs) -> None:
         "class_addr": kwargs["class_addr"],
         "ip": kwargs["ip"],
         "mask": kwargs["mask"],
+        "cidr": kwargs["cidr"],
         "net_addr":".".join([str(octet) for octet in kwargs["net_addr"]]),
         "broadcast": ".".join([str(octet) for octet in kwargs["broadcast"]]),
         "first_host": ".".join([str(octet) for octet in kwargs["first_host"]]),
@@ -179,6 +208,11 @@ def display_subnet_details(**kwargs) -> None:
                 value = str(value)
             print("{:<20}| ".format(key) + value)
             print("-"*37)
+
+class CIDRException(Exception):
+    def __init__(self, cidr):
+        self.cidr = cidr
+        self.message = f"Invalid CIDR mask {self.cidr}"
 
 class SubnetMaskException(Exception):
     def __init__(self, mask):
@@ -240,6 +274,7 @@ def validate_ip(ip: str) -> bool:
     else:
         return True
     
+
 def main():
     parser = ArgumentParser(
         prog="subnet.py",
@@ -250,21 +285,43 @@ def main():
     parser.add_argument("--net_class", dest="net_class", help="IPv4 network class")
     parser.add_argument("--ip", dest="ip", help="IPv4 address")
     parser.add_argument("--mask", dest="mask", help="IPv4 subnet mask")
+    parser.add_argument("--cidr", dest="cidr", help="CIDR mask")
     parser.add_argument("--json", dest="json", default=False, help="Add this argument if you want the details in json. The default value is False.")
 
     args = parser.parse_args()
 
     if (
         args.ip == None or 
-        args.mask == None or 
+        (args.mask == None and args.cidr == None) or
         args.net_class == None
     ):
         parser.print_help()
         exit()
 
+    mask = None
+    if args.cidr:
+        try:
+            if not validate_cidr(args.cidr):
+                raise CIDRException(args.cidr)
+        except CIDRException as cidr_e:
+            print(cidr_e.message)
+            exit()
+
+        mask = cidr_to_mask(args.cidr)
+        
+    elif args.mask:
+        try:
+            if not validate_subnet_mask(args.mask):
+                raise SubnetMaskException(args.mask)
+        except SubnetMaskException as mask_e:
+            print(mask_e.message)
+            exit()
+
+        mask = args.mask
+
     try:
-        if not validate_network(args.mask, args.net_class):
-            raise NetworkClassException(args.mask, args.net_class)
+        if not validate_network(mask, args.net_class):
+            raise NetworkClassException(mask, args.net_class)
     except NetworkClassException as class_e:
         print(class_e.message)
         exit()
@@ -275,26 +332,21 @@ def main():
     except IPv4Exception as ip_e:
         print(ip_e.message)
         exit()
-        
-    try:
-        if not validate_subnet_mask(args.mask):
-            raise SubnetMaskException(args.mask)
-    except SubnetMaskException as mask_e:
-        print(mask_e.message)
-        exit()
-    
+
     class_addr = args.net_class
-    net_addr = ip_net_addr(args.ip, args.mask)
-    broadcast = ip_broadcast(args.ip, args.mask)
+    net_addr = ip_net_addr(args.ip, mask)
+    broadcast = ip_broadcast(args.ip, mask)
     first_host, last_host = ip_first_last_host(args.ip, net_addr, broadcast)
-    hosts = ip_hosts(args.ip, args.mask)
-    networks = calc_subnets(args.mask, args.net_class)
+    hosts = ip_hosts(args.ip, mask)
+    networks = calc_subnets(mask, args.net_class)
+    cidr= mask_to_cidr(mask)
 
     display_subnet_details(
         json= args.json,
         class_addr= class_addr,
         ip= args.ip,
-        mask= args.mask,
+        mask= mask,
+        cidr= cidr,
         net_addr= net_addr,
         broadcast= broadcast,
         first_host= first_host,
