@@ -3,6 +3,20 @@ A subnet calculator cli tool.
 
 I am currently studying for the Network+ and I have always wanted my own subnet calculator so here it is.
 
+```
+python subnet.py -h
+usage: subnet.py [-h] [--ip IP] [--mask MASK]
+
+subnet.py is a subnet calculator. Example.) --ip 192.168.1.1 --mask 255.255.255.0
+
+options:
+  -h, --help   show this help message and exit
+  --ip IP      IPv4 address
+  --mask MASK  IPv4 subnet mask
+
+Please make sure to use the --ip and --mask flags.
+```
+
 ## How to use the script
 
 ### CLI subnet calculator
