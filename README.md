@@ -1,21 +1,5 @@
 # subnetting
-A cli subnet calculator.
-
-```
-python subnet.py -h
-usage: subnet.py [-h] [--net_class NET_CLASS] [--ip IP] [--mask MASK]
-
-subnet.py is a subnet calculator. Example.) --net_class C --ip 192.168.1.1 --mask 255.255.255.0
-
-options:
-  -h, --help            show this help message and exit
-  --net_class NET_CLASS
-                        IPv4 network class
-  --ip IP               IPv4 address
-  --mask MASK           IPv4 subnet mask
-
-Please make sure to use the --ip and --mask flags.
-```
+A cli subnet calculator 🧮 to satisfy your subnetting needs. Have you ever wanted to subnet a network? Well look no further. This is the World Famous 🌎 cli subnet calculator!
 
 ## How to use the script
 
