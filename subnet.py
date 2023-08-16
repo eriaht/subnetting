@@ -1,5 +1,6 @@
 # Written by eriaht 08/12/23
 
+import sys
 import re
 import json
 from math import floor
@@ -304,34 +305,30 @@ def main():
             if not validate_cidr(args.cidr):
                 raise CIDRException(args.cidr)
         except CIDRException as cidr_e:
-            print(cidr_e.message)
-            exit()
-
-        mask = cidr_to_mask(args.cidr)
+            sys.exit(cidr_e.message)
+        else:
+            mask = cidr_to_mask(args.cidr)
         
     elif args.mask:
         try:
             if not validate_subnet_mask(args.mask):
                 raise SubnetMaskException(args.mask)
         except SubnetMaskException as mask_e:
-            print(mask_e.message)
-            exit()
-
-        mask = args.mask
+            sys.exit(mask_e.message)
+        else:
+            mask = args.mask
 
     try:
         if not validate_network(mask, args.net_class):
             raise NetworkClassException(mask, args.net_class)
     except NetworkClassException as class_e:
-        print(class_e.message)
-        exit()
+        sys.exit(class_e.message)
 
     try:
         if not validate_ip(args.ip):
             raise IPv4Exception(args.ip)
     except IPv4Exception as ip_e:
-        print(ip_e.message)
-        exit()
+        sys.exit(ip_e.message)
 
     class_addr = args.net_class
     net_addr = ip_net_addr(args.ip, mask)
