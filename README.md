@@ -5,34 +5,36 @@ A cli subnet calculator 🧮 to satisfy your subnetting needs. Have you ever wan
 
 ### CLI subnet calculator
 ```
-python subnet.py --ip 72.20.2.79 --mask 255.255.224.0
+python subnet.py --net_class A --ip 72.20.2.79 --mask 255.255.255.0
 ```
 ### output
 ```
 -------------------------------------
-class:              | A
+class_addr          | A
 -------------------------------------
-ip address:         | 72.20.2.79
+ip                  | 72.20.2.79
 -------------------------------------
-subnet mask:        | 255.255.224.0
+mask                | 255.255.255.0
 -------------------------------------
-network address:    | 72.20.0.0
+net_addr            | 72.20.2.0
 -------------------------------------
-first host:         | 72.20.0.1
+broadcast           | 72.20.2.255
 -------------------------------------
-last host:          | 72.20.31.254
+first_host          | 72.20.2.1
 -------------------------------------
-broadcast address:  | 72.20.31.255
+last_host           | 72.20.2.254
 -------------------------------------
-number of hosts:    | 8192
+hosts               | 256
 -------------------------------------
-usable hosts:       | 8190
+usable_hosts        | 254
+-------------------------------------
+possible_networks   | 65536
 -------------------------------------
 ```
 
 ### Output in JSON
 ```
-python subnet.py --ip 72.20.2.79 --mask 255.255.224.0 --json=true
+python subnet.py --net_class C --ip 72.20.2.79 --mask 255.255.255.128 --json=true
 ```
 ### output
 ```
