@@ -238,7 +238,6 @@ def main():
         parser.print_help()
         exit()
 
-    # Validate ip and mask
     try:
         if not validate_ip(args.ip):
             raise IPv4Exception(args.ip)
