@@ -1,5 +1,4 @@
 # Written by eriaht 08/12/23
-
 import sys
 import re
 import json
@@ -203,12 +202,10 @@ def display_subnet_details(**kwargs) -> None:
         print(json.dumps([subnet_details], indent=2))
     else:
         print()
-        print("-"*37)
         for key, value in subnet_details.items():
             if type(value) is int:
                 value = str(value)
             print("{:<20}| ".format(key) + value)
-            print("-"*37)
 
 class CIDRException(Exception):
     def __init__(self, cidr):
@@ -243,7 +240,7 @@ def validate_network(mask: str, net_class: str) -> bool:
 # Validate subnet mask
 def validate_subnet_mask(mask: str) -> bool:
 
-    if not re.search("^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$", mask):
+    if not re.search(r"^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$", mask):
         return False
 
     mask_octets = [int(octet) for octet in mask.split(".")]
@@ -270,16 +267,16 @@ def validate_subnet_mask(mask: str) -> bool:
 
 # Validate IPv4 addres
 def validate_ip(ip: str) -> bool:
-    if not re.search("^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$", ip):
+    if not re.search(r"^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$", ip):
         return False
     else:
         return True
     
-
 def main():
     parser = ArgumentParser(
         prog="subnet.py",
-        description="subnet.py is a subnet calculator. Example.) --net_class C --ip 192.168.1.1 --mask 255.255.255.0",
+        usage="Example.) python subnet.py --net_class C --ip 192.168.1.1 --mask 255.255.255.0",
+        description="subnet.py is a subnet calculator.",
         epilog="Please make sure to use the --ip and --mask flags."
     )
 
